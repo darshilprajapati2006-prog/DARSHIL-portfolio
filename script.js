@@ -267,7 +267,7 @@ class AIBackgroundScene {
 
   buildScene() {
     const area = this.width * this.height;
-    const nodeCount = area < 600000 ? 24 : 40;
+    const nodeCount = area < 600000 ? 80 : 140;
     const shapeCount = area < 600000 ? 4 : 7;
     const orbCount = 22;
     const waveColumns = Math.max(18, Math.floor(this.width / 90));
@@ -277,9 +277,9 @@ class AIBackgroundScene {
       x: Math.random() * this.width,
       y: Math.random() * this.height * 0.72,
       z: Math.random() * 1,
-      radius: 1.2 + Math.random() * 2.4,
-      speedX: (Math.random() - 0.5) * 0.2,
-      speedY: (Math.random() - 0.5) * 0.12,
+      radius: 0.8 + Math.random() * 2.8,
+      speedX: (Math.random() - 0.5) * 0.35,
+      speedY: (Math.random() - 0.5) * 0.25,
       pulse: Math.random() * Math.PI * 2,
       cluster: index % 2
     }));
@@ -374,7 +374,7 @@ class AIBackgroundScene {
       node.renderY = node.y + parallaxY * node.z;
     }
 
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1.3;
     for (let i = 0; i < this.nodes.length; i += 1) {
       const nodeA = this.nodes[i];
       for (let j = i + 1; j < this.nodes.length; j += 1) {
@@ -397,10 +397,10 @@ class AIBackgroundScene {
     }
 
     for (const node of this.nodes) {
-      const pulse = 0.55 + Math.sin(this.time * 0.0014 + node.pulse) * 0.18;
+      const pulse = 0.75 + Math.sin(this.time * 0.0012 + node.pulse) * 0.30;
       ctx.beginPath();
       ctx.fillStyle = palette.node;
-      ctx.shadowBlur = 14;
+      ctx.shadowBlur = 24;
       ctx.shadowColor = palette.nodeGlow;
       ctx.arc(node.renderX, node.renderY, node.radius * pulse, 0, Math.PI * 2);
       ctx.fill();
