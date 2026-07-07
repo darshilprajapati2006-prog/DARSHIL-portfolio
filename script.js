@@ -396,7 +396,7 @@ class AIBackgroundScene {
         const dx = nodeA.renderX - nodeB.renderX;
         const dy = nodeA.renderY - nodeB.renderY;
         const distance = Math.hypot(dx, dy);
-        const maxDistance = 210 + (nodeA.cluster === nodeB.cluster ? 40 : 0);
+        const maxDistance = 180 + (nodeA.cluster === nodeB.cluster ? 35 : 0);
 
         if (distance > maxDistance) {
           continue;
