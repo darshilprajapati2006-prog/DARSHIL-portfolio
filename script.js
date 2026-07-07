@@ -268,7 +268,7 @@ class AIBackgroundScene {
   buildScene() {
     const area = this.width * this.height;
     const nodeCount = area < 600000 ? 80 : 140;
-    const shapeCount = area < 600000 ? 4 : 7;
+    const shapeCount = area < 600000 ? 8 : 14;
     const orbCount = 22;
     const waveColumns = Math.max(18, Math.floor(this.width / 90));
     const waveRows = 5;
@@ -372,6 +372,20 @@ class AIBackgroundScene {
 
       node.renderX = node.x + parallaxX * node.z;
       node.renderY = node.y + parallaxY * node.z;
+      const mouseX = this.mouse.x * this.width;
+      const mouseY = this.mouse.y * this.height;
+
+      const dx = mouseX - node.renderX;
+      const dy = mouseY - node.renderY;
+
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 180) {
+        const force = (180 - dist) / 180;
+
+        node.renderX -= dx * force * 0.05;
+        node.renderY -= dy * force * 0.05;
+      }
     }
 
     ctx.lineWidth = 1.3;
@@ -382,7 +396,7 @@ class AIBackgroundScene {
         const dx = nodeA.renderX - nodeB.renderX;
         const dy = nodeA.renderY - nodeB.renderY;
         const distance = Math.hypot(dx, dy);
-        const maxDistance = 160 + (nodeA.cluster === nodeB.cluster ? 30 : 0);
+        const maxDistance = 210 + (nodeA.cluster === nodeB.cluster ? 40 : 0);
 
         if (distance > maxDistance) {
           continue;
@@ -400,10 +414,12 @@ class AIBackgroundScene {
       const pulse = 0.75 + Math.sin(this.time * 0.0012 + node.pulse) * 0.30;
       ctx.beginPath();
       ctx.fillStyle = palette.node;
-      ctx.shadowBlur = 24;
+      ctx.shadowBlur = 40;
       ctx.shadowColor = palette.nodeGlow;
+      ctx.globalAlpha = 0.95;
       ctx.arc(node.renderX, node.renderY, node.radius * pulse, 0, Math.PI * 2);
       ctx.fill();
+      ctx.globalAlpha = 1;
       ctx.shadowBlur = 0;
     }
   }
