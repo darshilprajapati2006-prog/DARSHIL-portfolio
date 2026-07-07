@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Darshil Prajapati portfolio website for internships, placements, and high-impact software projects."
+    />
+    <title>Darshil Prajapati | Software Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="loader-overlay" id="loaderOverlay" aria-live="polite">
+      <div class="loader-content">
+        <p class="loader-label">Initializing Portfolio...</p>
+        <div class="loader-counter" id="loaderCounter">001</div>
+        <p class="loader-subtext">Loading Experience...</p>
+      </div>
+    </div>
+
+    <div class="background-shell" aria-hidden="true">
+      <canvas class="ai-scene" id="aiScene"></canvas>
+      <div class="bg-gradient bg-gradient-one"></div>
+      <div class="bg-gradient bg-gradient-two"></div>
+      <div class="bg-grid"></div>
+      <div class="bg-stars"></div>
+      <div class="bg-particles">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="page page-hidden" id="pageRoot">
+      <header class="topbar" id="topbar">
+        <a class="brand" href="#home" aria-label="Go to home section">
+          <span class="brand-mark">DP</span>
+          <span class="brand-text">
+            <strong>DARSHIL PRAJAPATI</strong>
+            <span>AI • QUANT • SOFTWARE ENGINEER</span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Primary navigation">
+          <a class="nav-link" href="#home">Home</a>
+          <a class="nav-link" href="#about">About</a>
+          <a class="nav-link" href="#projects">Projects</a>
+          <a class="nav-link" href="#journey">Journey</a>
+          <a class="nav-link" href="#skills">Skills</a>
+          <a class="nav-link" href="#coding-profile">Coding</a>
+          <a class="nav-link" href="#achievements">Achievements</a>
+          <a class="nav-link" href="#contact">Contact</a>
+        </nav>
+
+        <div class="topbar-actions">
+          <a class="topbar-button" href="#contact">Resume</a>
+          <a
+            class="topbar-button topbar-button-secondary"
+            href="https://github.com/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            type="button"
+            aria-label="Toggle dark and light theme"
+          >
+            <span class="theme-toggle-track">
+              <span class="theme-toggle-thumb"></span>
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero reveal" id="home">
+          <div class="hero-copy">
+            <div class="status-badge">
+              <span class="status-dot"></span>
+              <span>OPEN TO INTERNSHIPS</span>
+            </div>
+
+            <p class="hero-kicker">Hello, I'm</p>
+            <h1 class="hero-name">DARSHIL PRAJAPATI</h1>
+
+            <div class="typing-line" aria-live="polite">
+              <span class="typing-prefix">Building as </span>
+              <span class="typing-words" id="typingWords"></span>
+              <span class="typing-caret"></span>
+            </div>
+
+            <p class="hero-summary" id="heroSummary"></p>
+
+            <div class="cta-cluster" id="ctaCluster"></div>
+
+            <div class="hero-metrics" id="heroMetrics"></div>
+          </div>
+
+          <aside class="hero-visual">
+            <div class="profile-card">
+              <div class="profile-card-head">
+                <span class="profile-status">🟢 Available for Internship</span>
+                <span class="profile-label">Current Focus</span>
+              </div>
+
+              <div class="profile-main">
+                <div class="profile-initials">DP</div>
+                <div>
+                  <h2>Darshil Prajapati</h2>
+                  <p>AI &amp; Data Science Student</p>
+                  <span>SVNIT Surat</span>
+                </div>
+              </div>
+
+              <ul class="focus-list" id="focusList"></ul>
+
+              <div class="stats-grid" id="statsGrid"></div>
+            </div>
+          </aside>
+
+          <div class="scroll-indicator">
+            <div class="scroll-mouse">
+              <span></span>
+            </div>
+            <div class="scroll-copy">
+              <span>Scroll Down</span>
+              <span class="scroll-arrow">↓</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section reveal" id="about">
+          <div class="section-header">
+            <div>
+              <p class="section-label">About</p>
+              <h2>Designed to communicate depth, clarity, and placement readiness</h2>
+            </div>
+            <p class="section-intro">
+              I am an AI &amp; Data Science student at SVNIT Surat, passionate
+              about building intelligent software, solving algorithmic problems,
+              exploring quantitative finance, and developing scalable modern applications.
+            </p>
+          </div>
+
+          <div class="about-grid">
+            <article class="glass-card feature-card feature-card-primary">
+              <span class="card-tag">Approach</span>
+              <h3>Projects that hold up in technical conversations</h3>
+              <p>
+                I focus on software that is not only useful but explainable:
+                architecture, tradeoffs, edge cases, and next improvements all matter.
+              </p>
+            </article>
+            <article class="glass-card feature-card">
+              <span class="card-tag">Direction</span>
+              <h3>AI, quantitative thinking, and software systems</h3>
+              <p>
+                My work sits at the intersection of engineering discipline,
+                algorithmic thinking, and product-minded implementation.
+              </p>
+            </article>
+            <article class="glass-card feature-card">
+              <span class="card-tag">Outcome</span>
+              <h3>A portfolio built for internships and final-year placements</h3>
+              <p>
+                The site is structured so recruiters and faculty can understand
+                strengths fast, without guessing what kind of engineer I am becoming.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section reveal" id="projects">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Projects</p>
+              <h2>Work that gives the resume proof</h2>
+            </div>
+            <div class="filter-row" id="projectFilters"></div>
+          </div>
+          <div class="projects-grid" id="projectsGrid"></div>
+        </section>
+
+        <section class="section reveal" id="journey">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Journey</p>
+              <h2>Growth across academics, engineering, and interview preparation</h2>
+            </div>
+          </div>
+          <div class="journey-grid" id="journeyGrid"></div>
+        </section>
+
+        <section class="section reveal" id="skills">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Skills</p>
+              <h2>Tools and foundations I can build with right now</h2>
+            </div>
+          </div>
+
+          <div class="skills-layout">
+            <div class="skills-grid" id="skillGroups"></div>
+            <aside class="skills-side">
+              <article class="glass-card side-card">
+                <span class="card-tag">Work Style</span>
+                <h3>How I approach building</h3>
+                <ul class="detail-list" id="workStyleList"></ul>
+              </article>
+            </aside>
+          </div>
+        </section>
+        <section class="section reveal" id="coding-profile">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Coding Profile</p>
+              <h2>Consistent problem solving across platforms</h2>
+            </div>
+            <p class="section-intro">
+              Aggregated snapshot of my DSA and competitive programming activity
+              across LeetCode, Codeforces, and GeeksforGeeks — synced through Codolio.
+            </p>
+          </div>
+
+          <div class="glass-card coding-card">
+            <div class="coding-card-visual">
+              <img
+                class="coding-stats-image"
+                id="codingStatsImage"
+                src="https://dsastats.vercel.app/api/codolio/ImDarshil13"
+                alt="Darshil Prajapati live coding stats card"
+                loading="lazy"
+              />
+              <p class="coding-fallback-note" id="codingFallbackNote" hidden>
+                Live card is temporarily unavailable — check the full profile below.
+              </p>
+            </div>
+
+            <div class="coding-card-info">
+              <div class="coding-stats-grid" id="codingStatsGrid"></div>
+              <a
+                class="interactive-button primary-button coding-profile-link"
+                id="codingProfileLink"
+                href="https://codolio.com/profile/ImDarshil13"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View Full Coding Profile ↗
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="section reveal" id="achievements">
+          <div class="section-header">
+            <div>
+              <p class="section-label">Achievements</p>
+              <h2>Signals that matter to recruiters and evaluators</h2>
+            </div>
+          </div>
+          <div class="achievements-grid" id="achievementsGrid"></div>
+        </section>
+
+        <section class="section reveal" id="contact">
+          <div class="contact-layout">
+            <div class="contact-copy">
+              <p class="section-label">Contact</p>
+              <h2>Ready for internships, collaborations, and placement opportunities</h2>
+              <p>
+                Replace the placeholders with your real email, GitHub, LinkedIn,
+                resume, LeetCode, and Codeforces links before you publish.
+              </p>
+            </div>
+
+            <div class="glass-card contact-card">
+              <div class="contact-item">
+                <span>Email</span>
+                <strong id="emailValue">darshil@example.com</strong>
+              </div>
+              <div class="contact-item">
+                <span>Location</span>
+                <strong>Surat, India</strong>
+              </div>
+              <div class="contact-item">
+                <span>Focus Areas</span>
+                <strong>AI, Quant, DSA, Web Development</strong>
+              </div>
+              <div class="contact-actions">
+                <button class="interactive-button primary-button" id="copyEmailButton" type="button">
+                  Copy Email
+                </button>
+                <a
+                  class="interactive-button secondary-button"
+                  href="https://github.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  GitHub
+                </a>
+              </div>
+              <p class="copy-status" id="copyStatus">Update these placeholders before publishing.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer reveal">
+        <p>Designed for clarity, credibility, and high-signal first impressions.</p>
+        <p>&copy; <span id="year"></span> Darshil Prajapati</p>
+      </footer>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
