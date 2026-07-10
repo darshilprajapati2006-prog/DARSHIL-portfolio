@@ -181,8 +181,6 @@ const copyEmailButton = document.getElementById("copyEmailButton");
 const copyStatus = document.getElementById("copyStatus");
 const themeToggle = document.getElementById("themeToggle");
 const yearNode = document.getElementById("year");
-const aiScene = document.getElementById("aiScene");
-
 const revealNodes = document.querySelectorAll(".reveal");
 const sectionNodes = document.querySelectorAll("main section[id]");
 const navLinks = document.querySelectorAll(".nav-link");
@@ -193,406 +191,8 @@ const state = {
   typingCharacterIndex: 0,
   isDeleting: false,
   currentFilter: "All",
-  lastScrollY: 0,
-  backgroundScene: null
+  lastScrollY: 0
 };
-
-class AIBackgroundScene {
-  constructor(canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");
-    this.width = 0;
-    this.height = 0;
-    this.pixelRatio = 1;
-    this.animationFrame = 0;
-    this.time = 0;
-    this.running = false;
-    this.nodes = [];
-    this.shapes = [];
-    this.orbPoints = [];
-    this.wavePoints = [];
-    this.mouse = { x: 0.5, y: 0.5 };
-    this.reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    this.handleResize = this.handleResize.bind(this);
-    this.animate = this.animate.bind(this);
-    this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
-    this.handlePointerMove = this.handlePointerMove.bind(this);
-  }
-
-  init() {
-    if (!this.ctx) {
-      return;
-    }
-
-    this.handleResize();
-    window.addEventListener("resize", this.handleResize, { passive: true });
-    window.addEventListener("pointermove", this.handlePointerMove, { passive: true });
-    document.addEventListener("visibilitychange", this.handleVisibilityChange);
-    this.running = true;
-    this.animationFrame = requestAnimationFrame(this.animate);
-  }
-
-  destroy() {
-    this.running = false;
-    cancelAnimationFrame(this.animationFrame);
-    window.removeEventListener("resize", this.handleResize);
-    window.removeEventListener("pointermove", this.handlePointerMove);
-    document.removeEventListener("visibilitychange", this.handleVisibilityChange);
-  }
-
-  handlePointerMove(event) {
-    this.mouse.x = event.clientX / Math.max(window.innerWidth, 1);
-    this.mouse.y = event.clientY / Math.max(window.innerHeight, 1);
-  }
-
-  handleVisibilityChange() {
-    if (document.hidden) {
-      cancelAnimationFrame(this.animationFrame);
-      return;
-    }
-
-    this.animationFrame = requestAnimationFrame(this.animate);
-  }
-
-  handleResize() {
-    this.pixelRatio = Math.min(window.devicePixelRatio || 1, 1.8);
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-    this.canvas.width = Math.floor(this.width * this.pixelRatio);
-    this.canvas.height = Math.floor(this.height * this.pixelRatio);
-    this.ctx.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
-    this.buildScene();
-  }
-
-  buildScene() {
-    const area = this.width * this.height;
-    const nodeCount = area < 600000 ? 80 : 140;
-    const shapeCount = area < 600000 ? 8 : 14;
-    const orbCount = 22;
-    const waveColumns = Math.max(18, Math.floor(this.width / 90));
-    const waveRows = 5;
-
-    this.nodes = Array.from({ length: nodeCount }, (_, index) => ({
-      x: Math.random() * this.width,
-      y: Math.random() * this.height * 0.72,
-      z: Math.random() * 1,
-      radius: 0.8 + Math.random() * 2.8,
-      speedX: (Math.random() - 0.5) * 0.35,
-      speedY: (Math.random() - 0.5) * 0.25,
-      pulse: Math.random() * Math.PI * 2,
-      cluster: index % 2
-    }));
-
-    this.shapes = Array.from({ length: shapeCount }, () => ({
-      x: Math.random() * this.width,
-      y: this.height * (0.14 + Math.random() * 0.44),
-      size: 14 + Math.random() * 22,
-      rotation: Math.random() * Math.PI,
-      speed: (Math.random() - 0.5) * 0.003,
-      drift: 0.08 + Math.random() * 0.14,
-      type: Math.random() > 0.5 ? "hex" : "diamond",
-      depth: 0.5 + Math.random() * 0.6
-    }));
-
-    this.orbPoints = Array.from({ length: orbCount }, () => {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.random() * Math.PI;
-      return { theta, phi, speed: 0.001 + Math.random() * 0.002 };
-    });
-
-    this.wavePoints = Array.from({ length: waveRows }, (_, row) =>
-      Array.from({ length: waveColumns }, (_, column) => ({
-        column,
-        row,
-        offset: Math.random() * Math.PI * 2
-      }))
-    );
-  }
-
-  getPalette() {
-    const light = document.body.classList.contains("theme-light");
-    return light
-      ? {
-          line: "rgba(58, 99, 255, 0.16)",
-          node: "rgba(58, 99, 255, 0.7)",
-          nodeGlow: "rgba(28, 169, 233, 0.35)",
-          wave: "rgba(58, 99, 255, 0.36)",
-          waveGlow: "rgba(28, 169, 233, 0.22)",
-          orb: "rgba(58, 99, 255, 0.26)",
-          shape: "rgba(58, 99, 255, 0.28)"
-        }
-      : {
-          line: "rgba(124, 156, 255, 0.16)",
-          node: "rgba(103, 209, 255, 0.92)",
-          nodeGlow: "rgba(103, 209, 255, 0.3)",
-          wave: "rgba(103, 209, 255, 0.38)",
-          waveGlow: "rgba(124, 156, 255, 0.24)",
-          orb: "rgba(124, 156, 255, 0.32)",
-          shape: "rgba(124, 156, 255, 0.28)"
-        };
-  }
-
-  animate(now) {
-    if (!this.running || document.hidden) {
-      return;
-    }
-
-    this.time = now;
-    this.draw();
-    this.animationFrame = requestAnimationFrame(this.animate);
-  }
-
-  draw() {
-    const ctx = this.ctx;
-    const palette = this.getPalette();
-
-    ctx.clearRect(0, 0, this.width, this.height);
-    this.drawOrb(palette);
-    this.drawNetwork(palette);
-    this.drawWaveTerrain(palette);
-    this.drawShapes(palette);
-  }
-
-  drawNetwork(palette) {
-    const ctx = this.ctx;
-    const parallaxX = (this.mouse.x - 0.5) * 26;
-    const parallaxY = (this.mouse.y - 0.5) * 20;
-
-    for (const node of this.nodes) {
-      if (!this.reducedMotion) {
-        node.x += node.speedX * (0.5 + node.z);
-        node.y += node.speedY * (0.5 + node.z);
-      }
-
-      if (node.x < -50) node.x = this.width + 30;
-      if (node.x > this.width + 50) node.x = -30;
-      if (node.y < -20) node.y = this.height * 0.65;
-      if (node.y > this.height * 0.75) node.y = -10;
-
-      node.renderX = node.x + parallaxX * node.z;
-      node.renderY = node.y + parallaxY * node.z;
-      const mouseX = this.mouse.x * this.width;
-      const mouseY = this.mouse.y * this.height;
-
-      const dx = mouseX - node.renderX;
-      const dy = mouseY - node.renderY;
-
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      if (dist < 180) {
-        const force = (180 - dist) / 180;
-
-        node.renderX -= dx * force * 0.05;
-        node.renderY -= dy * force * 0.05;
-      }
-    }
-
-    ctx.lineWidth = 1.3;
-    for (let i = 0; i < this.nodes.length; i += 1) {
-      const nodeA = this.nodes[i];
-      for (let j = i + 1; j < this.nodes.length; j += 1) {
-        const nodeB = this.nodes[j];
-        const dx = nodeA.renderX - nodeB.renderX;
-        const dy = nodeA.renderY - nodeB.renderY;
-        const distance = Math.hypot(dx, dy);
-        const maxDistance = 180 + (nodeA.cluster === nodeB.cluster ? 35 : 0);
-
-        if (distance > maxDistance) {
-          continue;
-        }
-
-        ctx.strokeStyle = palette.line.replace("0.16", String((1 - distance / maxDistance) * 0.18));
-        ctx.beginPath();
-        ctx.moveTo(nodeA.renderX, nodeA.renderY);
-        ctx.lineTo(nodeB.renderX, nodeB.renderY);
-        ctx.stroke();
-      }
-    }
-
-    for (const node of this.nodes) {
-      const pulse = 0.75 + Math.sin(this.time * 0.0012 + node.pulse) * 0.30;
-      ctx.beginPath();
-      ctx.fillStyle = palette.node;
-      ctx.shadowBlur = 40;
-      ctx.shadowColor = palette.nodeGlow;
-      ctx.globalAlpha = 0.95;
-      ctx.arc(node.renderX, node.renderY, node.radius * pulse, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
-    }
-  }
-
-  drawWaveTerrain(palette) {
-    const ctx = this.ctx;
-    const baseY = this.height * 0.72;
-    const columns = this.wavePoints[0].length;
-    const spacingX = this.width / (columns - 1);
-    const rowSpacing = 22;
-
-    this.wavePoints.forEach((rowPoints, rowIndex) => {
-      const points = rowPoints.map((point, columnIndex) => {
-        const x = columnIndex * spacingX;
-        const phase = this.time * 0.0013 + point.offset + rowIndex * 0.8;
-        const y =
-          baseY +
-          rowIndex * rowSpacing +
-          Math.sin(phase + columnIndex * 0.45) * 22 +
-          Math.cos(phase * 0.8 + columnIndex * 0.18) * 12;
-
-        return { x, y };
-      });
-
-      ctx.beginPath();
-      ctx.strokeStyle = palette.wave;
-      ctx.lineWidth = rowIndex === 0 ? 1.4 : 1;
-      points.forEach((point, index) => {
-        if (index === 0) {
-          ctx.moveTo(point.x, point.y);
-        } else {
-          ctx.lineTo(point.x, point.y);
-        }
-      });
-      ctx.stroke();
-
-      points.forEach((point, index) => {
-        if (index % 3 !== 0) {
-          return;
-        }
-
-        ctx.beginPath();
-        ctx.fillStyle = palette.waveGlow;
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = palette.waveGlow;
-        ctx.arc(point.x, point.y, 1.8, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      });
-
-      if (rowIndex > 0) {
-        const prevPoints = this.wavePoints[rowIndex - 1].map((point, columnIndex) => {
-          const x = columnIndex * spacingX;
-          const phase = this.time * 0.0013 + point.offset + (rowIndex - 1) * 0.8;
-          const y =
-            baseY +
-            (rowIndex - 1) * rowSpacing +
-            Math.sin(phase + columnIndex * 0.45) * 22 +
-            Math.cos(phase * 0.8 + columnIndex * 0.18) * 12;
-
-          return { x, y };
-        });
-
-        ctx.strokeStyle = palette.line;
-        for (let i = 0; i < points.length; i += 2) {
-          ctx.beginPath();
-          ctx.moveTo(points[i].x, points[i].y);
-          ctx.lineTo(prevPoints[i].x, prevPoints[i].y);
-          ctx.stroke();
-        }
-      }
-    });
-  }
-
-  drawShapes(palette) {
-    const ctx = this.ctx;
-
-    this.shapes.forEach((shape, index) => {
-      if (!this.reducedMotion) {
-        shape.rotation += shape.speed;
-        shape.y += Math.sin(this.time * 0.0006 + index) * 0.06 * shape.drift;
-      }
-
-      const driftX = Math.sin(this.time * 0.0004 + index * 3) * 20 * shape.depth;
-      const driftY = Math.cos(this.time * 0.0005 + index * 2) * 16 * shape.depth;
-
-      ctx.save();
-      ctx.translate(shape.x + driftX, shape.y + driftY);
-      ctx.rotate(shape.rotation);
-      ctx.strokeStyle = palette.shape;
-      ctx.lineWidth = 1;
-      ctx.shadowBlur = 16;
-      ctx.shadowColor = palette.shape;
-
-      if (shape.type === "hex") {
-        this.drawPolygon(ctx, 6, shape.size);
-      } else {
-        this.drawPolygon(ctx, 4, shape.size);
-      }
-
-      ctx.stroke();
-      ctx.restore();
-      ctx.shadowBlur = 0;
-    });
-  }
-
-  drawOrb(palette) {
-    const ctx = this.ctx;
-    const centerX = this.width * 0.8;
-    const centerY = this.height * 0.24;
-    const radius = Math.min(this.width, this.height) * 0.14;
-    const points = [];
-
-    this.orbPoints.forEach((point) => {
-      const theta = point.theta + this.time * point.speed * (this.reducedMotion ? 0.2 : 1);
-      const phi = point.phi;
-      const x3d = Math.cos(theta) * Math.sin(phi);
-      const y3d = Math.sin(theta) * Math.sin(phi);
-      const z3d = Math.cos(phi);
-      const scale = 0.62 + (z3d + 1) * 0.22;
-
-      points.push({
-        x: centerX + x3d * radius * scale,
-        y: centerY + y3d * radius * scale,
-        z: z3d
-      });
-    });
-
-    ctx.strokeStyle = palette.orb;
-    ctx.lineWidth = 1;
-    for (let i = 0; i < points.length; i += 1) {
-      for (let j = i + 1; j < points.length; j += 1) {
-        const dx = points[i].x - points[j].x;
-        const dy = points[i].y - points[j].y;
-        const distance = Math.hypot(dx, dy);
-        if (distance > radius * 0.6) {
-          continue;
-        }
-
-        ctx.globalAlpha = 0.08 + ((1 - distance / (radius * 0.6)) * 0.18);
-        ctx.beginPath();
-        ctx.moveTo(points[i].x, points[i].y);
-        ctx.lineTo(points[j].x, points[j].y);
-        ctx.stroke();
-      }
-    }
-
-    ctx.globalAlpha = 1;
-    points.forEach((point) => {
-      ctx.beginPath();
-      ctx.fillStyle = palette.node;
-      ctx.shadowBlur = 14;
-      ctx.shadowColor = palette.nodeGlow;
-      ctx.arc(point.x, point.y, 1.6 + point.z * 0.8, 0, Math.PI * 2);
-      ctx.fill();
-    });
-    ctx.shadowBlur = 0;
-  }
-
-  drawPolygon(ctx, sides, radius) {
-    ctx.beginPath();
-    for (let i = 0; i <= sides; i += 1) {
-      const angle = (Math.PI * 2 * i) / sides;
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius;
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-    }
-  }
-}
 
 // Render helpers
 function renderHero() {
@@ -602,7 +202,7 @@ function renderHero() {
     .map((cta) => {
       const target = cta.external ? ' target="_blank" rel="noreferrer"' : "";
       return `
-        <a class="interactive-button ${cta.variant}" href="${cta.href}"${target}>
+        <a class="interactive-button glass-reflect ${cta.variant}" href="${cta.href}"${target}>
           ${cta.label}
         </a>
       `;
@@ -826,21 +426,30 @@ function setupSectionTracking() {
 
 function setupNavbarScrollBehavior() {
   state.lastScrollY = window.scrollY;
+  let scrollTicking = false;
 
   window.addEventListener(
     "scroll",
     () => {
-      const currentScrollY = window.scrollY;
-
-      topbar.classList.toggle("scrolled", currentScrollY > 24);
-
-      if (currentScrollY > state.lastScrollY && currentScrollY > 140) {
-        topbar.classList.add("nav-hidden");
-      } else {
-        topbar.classList.remove("nav-hidden");
+      if (scrollTicking) {
+        return;
       }
 
-      state.lastScrollY = currentScrollY;
+      scrollTicking = true;
+      requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+
+        topbar.classList.toggle("scrolled", currentScrollY > 24);
+
+        if (currentScrollY > state.lastScrollY && currentScrollY > 140) {
+          topbar.classList.add("nav-hidden");
+        } else {
+          topbar.classList.remove("nav-hidden");
+        }
+
+        state.lastScrollY = currentScrollY;
+        scrollTicking = false;
+      });
     },
     { passive: true }
   );
@@ -900,15 +509,6 @@ function setupThemeToggle() {
     const nextTheme = document.body.classList.contains("theme-light") ? "light" : "dark";
     window.localStorage.setItem("portfolio-theme", nextTheme);
   });
-}
-
-function setupBackgroundScene() {
-  if (!aiScene) {
-    return;
-  }
-
-  state.backgroundScene = new AIBackgroundScene(aiScene);
-  state.backgroundScene.init();
 }
 
 function setupRippleEffect() {
@@ -988,7 +588,6 @@ function init() {
   setupNavbarScrollBehavior();
   setupCounters();
   setupThemeToggle();
-  setupBackgroundScene();
   setupRippleEffect();
   startTypingLoop();
   copyEmailButton.addEventListener("click", copyEmail);
