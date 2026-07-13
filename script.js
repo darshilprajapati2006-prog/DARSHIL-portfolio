@@ -191,7 +191,8 @@ const state = {
   typingCharacterIndex: 0,
   isDeleting: false,
   currentFilter: "All",
-  lastScrollY: 0
+  lastScrollY: 0,
+  activeSectionId: "home"
 };
 
 // Render helpers
@@ -402,26 +403,62 @@ function setupRevealObserver() {
 }
 
 function setupSectionTracking() {
+  const visibilityMap = new Map();
+
+  function setActiveNavLink(currentId) {
+    if (!currentId || state.activeSectionId === currentId) {
+      return;
+    }
+
+    state.activeSectionId = currentId;
+    navLinks.forEach((link) => {
+      link.classList.toggle("is-active", link.getAttribute("href") === `#${currentId}`);
+    });
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        const currentId = entry.target.id;
-        navLinks.forEach((link) => {
-          link.classList.toggle("is-active", link.getAttribute("href") === `#${currentId}`);
-        });
+        visibilityMap.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
       });
+
+      const nextActiveSection = [...visibilityMap.entries()]
+        .sort((left, right) => right[1] - left[1])[0]?.[0];
+
+      if (nextActiveSection) {
+        setActiveNavLink(nextActiveSection);
+      }
     },
     {
       rootMargin: "-30% 0px -45% 0px",
-      threshold: 0.1
+      threshold: [0.1, 0.2, 0.35, 0.5, 0.7]
     }
   );
 
   sectionNodes.forEach((section) => observer.observe(section));
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      const targetId = link.getAttribute("href").slice(1);
+      setActiveNavLink(targetId);
+    });
+  });
+}
+
+function setupNavPointerEffects() {
+  navLinks.forEach((link) => {
+    function updatePointer(event) {
+      const rect = link.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+      link.style.setProperty("--nav-pointer-x", `${x}%`);
+      link.style.setProperty("--nav-pointer-y", `${y}%`);
+    }
+
+    link.addEventListener("pointerenter", updatePointer);
+    link.addEventListener("pointermove", updatePointer);
+  });
 }
 
 function setupNavbarScrollBehavior() {
@@ -585,6 +622,7 @@ function init() {
   renderAchievements();
   setupRevealObserver();
   setupSectionTracking();
+  setupNavPointerEffects();
   setupNavbarScrollBehavior();
   setupCounters();
   setupThemeToggle();
