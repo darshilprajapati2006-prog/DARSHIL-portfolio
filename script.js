@@ -3,12 +3,11 @@ const profile = {
   heroSummary:
     "I am an AI & Data Science student at SVNIT Surat, passionate about building intelligent software, solving algorithmic problems, exploring quantitative finance, and developing scalable modern applications.",
   typingRoles: [
-    "AI Engineer",
-    "Competitive Programmer",
-    "Future Quant Developer",
-    "Problem Solver",
-    "Software Engineer",
-    "Machine Learning Enthusiast"
+    "ARTIFICIAL INTELLIGENCE",
+    "MACHINE LEARNING",
+    "SOFTWARE DEVELOPMENT",
+    "QUANTITATIVE FINANCE",
+    "COMPETITIVE PROGRAMMING"
   ],
   ctas: [
     { label: "Download Resume", href: "#contact", variant: "primary-button" },
@@ -22,14 +21,6 @@ const profile = {
     { label: "Current focus", value: "AI, DSA, Quant, Web" },
     { label: "University", value: "SVNIT Surat" },
     { label: "Best fit", value: "Internship and placement roles" }
-  ],
-  focusAreas: ["DSA", "AI", "Quant", "Web Development"],
-  stats: [
-    { label: "LeetCode", value: 250, suffix: "+" },
-    { label: "Codeforces", value: 1200, suffix: "+" },
-    { label: "Projects", value: 8, suffix: "+" },
-    { label: "Hackathons", value: 4, suffix: "+" },
-    { label: "GitHub", value: 40, suffix: "+" }
   ]
 };
 
@@ -163,10 +154,10 @@ const loaderOverlay = document.getElementById("loaderOverlay");
 const loaderCounter = document.getElementById("loaderCounter");
 const heroSummary = document.getElementById("heroSummary");
 const typingWords = document.getElementById("typingWords");
+const heroCopy = document.querySelector(".hero-copy");
+const journeyNodes = document.querySelectorAll(".journey-node");
 const ctaCluster = document.getElementById("ctaCluster");
 const heroMetrics = document.getElementById("heroMetrics");
-const focusList = document.getElementById("focusList");
-const statsGrid = document.getElementById("statsGrid");
 const projectFilters = document.getElementById("projectFilters");
 const projectsGrid = document.getElementById("projectsGrid");
 const journeyGrid = document.getElementById("journeyGrid");
@@ -191,7 +182,6 @@ const state = {
   typingCharacterIndex: 0,
   isDeleting: false,
   currentFilter: "All",
-  lastScrollY: 0,
   activeSectionId: "home"
 };
 
@@ -216,21 +206,6 @@ function renderHero() {
         <article class="metric-card">
           <span>${metric.label}</span>
           <strong>${metric.value}</strong>
-        </article>
-      `
-    )
-    .join("");
-
-  focusList.innerHTML = profile.focusAreas.map((item) => `<li>${item}</li>`).join("");
-
-  statsGrid.innerHTML = profile.stats
-    .map(
-      (stat) => `
-        <article class="stat-card">
-          <strong class="stat-value" data-counter-target="${stat.value}" data-counter-suffix="${stat.suffix}">
-            0${stat.suffix}
-          </strong>
-          <span class="stat-value-label">${stat.label}</span>
         </article>
       `
     )
@@ -371,19 +346,39 @@ function startTypingLoop() {
 
   typingWords.textContent = activeText;
   state.typingCharacterIndex = activeText.length;
+  syncHeroJourney(activeText.length, currentWord.length);
 
-  let delay = state.isDeleting ? 55 : 95;
+  let delay = state.isDeleting ? 42 : 90;
 
   if (!state.isDeleting && activeText === currentWord) {
-    delay = 1400;
+    delay = 1000;
     state.isDeleting = true;
   } else if (state.isDeleting && activeText === "") {
     state.isDeleting = false;
     state.typingRoleIndex = (state.typingRoleIndex + 1) % profile.typingRoles.length;
+    syncHeroJourney(0, profile.typingRoles[state.typingRoleIndex].length);
     delay = 260;
   }
 
   window.setTimeout(startTypingLoop, delay);
+}
+
+function syncHeroJourney(characterCount, wordLength) {
+  const safeLength = Math.max(wordLength, 1);
+  const progress = Math.max(0, Math.min(characterCount / safeLength, 1));
+  const progressPercent = `${(progress * 100).toFixed(2)}%`;
+
+  heroCopy?.style.setProperty("--journey-progress", progressPercent);
+  heroCopy?.style.setProperty("--journey-energy", progress.toFixed(3));
+
+  const thresholds = [0, 0.18, 0.34, 0.52, 0.7, 0.86, 1];
+  journeyNodes.forEach((node, index) => {
+    const isPassed = progress > thresholds[index] + 0.035;
+    const isActive = progress >= Math.max(0, thresholds[index] - 0.035) && progress <= Math.min(1, thresholds[index] + 0.08);
+
+    node.classList.toggle("is-passed", isPassed);
+    node.classList.toggle("is-active", isActive);
+  });
 }
 
 function setupRevealObserver() {
@@ -462,7 +457,6 @@ function setupNavPointerEffects() {
 }
 
 function setupNavbarScrollBehavior() {
-  state.lastScrollY = window.scrollY;
   let scrollTicking = false;
 
   window.addEventListener(
@@ -477,14 +471,7 @@ function setupNavbarScrollBehavior() {
         const currentScrollY = window.scrollY;
 
         topbar.classList.toggle("scrolled", currentScrollY > 24);
-
-        if (currentScrollY > state.lastScrollY && currentScrollY > 140) {
-          topbar.classList.add("nav-hidden");
-        } else {
-          topbar.classList.remove("nav-hidden");
-        }
-
-        state.lastScrollY = currentScrollY;
+        topbar.classList.remove("nav-hidden");
         scrollTicking = false;
       });
     },
@@ -603,6 +590,7 @@ function runLoader() {
 
     loaderCounter.textContent = "100";
     loaderOverlay.classList.add("is-hidden");
+    document.body.classList.add("page-ready");
     pageRoot.classList.remove("page-hidden");
     pageRoot.classList.add("page-visible");
   }

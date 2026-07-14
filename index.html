@@ -43,67 +43,107 @@
       </div>
     </div>
 
+    <header class="topbar glass-reflect" id="topbar">
+      <a class="brand" href="#home" aria-label="Go to home section">
+        <span class="brand-logo-shell glass-reflect" aria-hidden="true">
+          <img
+            class="brand-logo"
+            src="./assets/darshil-brand-mark.svg"
+            alt=""
+            loading="eager"
+            decoding="async"
+          />
+        </span>
+        <span class="brand-text">
+          <strong>DARSHIL PRAJAPATI</strong>
+          <span class="brand-subtitle">
+            <span class="brand-dot"></span>
+            <span>AI/ML ENGINEER</span>
+          </span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="nav-link" href="#home">Home</a>
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="#academics">Academics</a>
+        <a class="nav-link" href="#skills">Skills</a>
+        <a class="nav-link" href="#coding-profile">Coding</a>
+        <a class="nav-link" href="#projects">Projects</a>
+        <a class="nav-link" href="#achievements">Achievements</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+
+      <div class="topbar-actions">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          type="button"
+          aria-label="Toggle dark and light theme"
+        >
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+        </button>
+      </div>
+    </header>
+
     <div class="page page-hidden" id="pageRoot">
-      <header class="topbar glass-reflect" id="topbar">
-        <a class="brand" href="#home" aria-label="Go to home section">
-          <span class="brand-logo-shell glass-reflect" aria-hidden="true">
-            <img
-              class="brand-logo"
-              src="./assets/darshil-brand-mark.svg"
-              alt=""
-              loading="eager"
-              decoding="async"
-            />
-          </span>
-          <span class="brand-text">
-            <strong>DARSHIL PRAJAPATI</strong>
-            <span class="brand-subtitle">
-              <span class="brand-dot"></span>
-              <span>AI/ML ENGINEER</span>
-            </span>
-          </span>
-        </a>
-
-        <nav class="nav" aria-label="Primary navigation">
-          <a class="nav-link" href="#home">Home</a>
-          <a class="nav-link" href="#about">About</a>
-          <a class="nav-link" href="#academics">Academics</a>
-          <a class="nav-link" href="#skills">Skills</a>
-          <a class="nav-link" href="#coding-profile">Coding</a>
-          <a class="nav-link" href="#projects">Projects</a>
-          <a class="nav-link" href="#achievements">Achievements</a>
-          <a class="nav-link" href="#contact">Contact</a>
-        </nav>
-
-        <div class="topbar-actions">
-          <button
-            class="theme-toggle"
-            id="themeToggle"
-            type="button"
-            aria-label="Toggle dark and light theme"
-          >
-            <span class="theme-toggle-track">
-              <span class="theme-toggle-thumb"></span>
-            </span>
-          </button>
-        </div>
-      </header>
-
       <main>
         <section class="hero reveal" id="home">
           <div class="hero-copy">
             <div class="status-badge">
-              <span class="status-dot"></span>
-              <span>OPEN TO INTERNSHIPS</span>
+              <span>🤖 WELCOME TO MY ENGINEERING PORTFOLIO 🙏</span>
             </div>
 
-            <p class="hero-kicker">Hello, I'm</p>
-            <h1 class="hero-name">DARSHIL PRAJAPATI</h1>
+            <h1 class="hero-name">
+              <span class="hero-name-static">THE WORLD OF</span>
+            </h1>
 
-            <div class="typing-line" aria-live="polite">
-              <span class="typing-prefix">Building as </span>
+            <div class="typing-line" aria-live="polite" aria-atomic="true">
               <span class="typing-words" id="typingWords"></span>
               <span class="typing-caret"></span>
+            </div>
+
+            <div class="journey-track-shell glass-reflect" aria-hidden="true">
+              <div class="journey-track-glow"></div>
+              <div class="journey-track-line">
+                <div class="journey-progress"></div>
+                <div class="journey-arrow">
+                  <span class="journey-arrow-core"></span>
+                </div>
+              </div>
+
+              <div class="journey-nodes">
+                <div class="journey-node" data-node-key="start">
+                  <span class="journey-node-orb"></span>
+                  <span class="journey-node-label">START</span>
+                </div>
+                <div class="journey-node" data-node-key="ai">
+                  <span class="journey-node-orb"></span>
+                  <span class="journey-node-label">AI</span>
+                </div>
+                <div class="journey-node" data-node-key="ml">
+                  <span class="journey-node-orb"></span>
+                  <span class="journey-node-label">ML</span>
+                </div>
+                <div class="journey-node" data-node-key="dev">
+                  <span class="journey-node-orb"></span>
+                  <span class="journey-node-label">DEV</span>
+                </div>
+                <div class="journey-node" data-node-key="quant">
+                  <span class="journey-node-orb"></span>
+                  <span class="journey-node-label">QUANT</span>
+                </div>
+                <div class="journey-node" data-node-key="cp">
+                  <span class="journey-node-orb"></span>
+                  <span class="journey-node-label">CP</span>
+                </div>
+                <div class="journey-node" data-node-key="end">
+                  <span class="journey-node-orb"></span>
+                  <span class="journey-node-label">END</span>
+                </div>
+              </div>
             </div>
 
             <p class="hero-summary" id="heroSummary"></p>
@@ -112,28 +152,6 @@
 
             <div class="hero-metrics" id="heroMetrics"></div>
           </div>
-
-          <aside class="hero-visual">
-            <div class="profile-card glass-reflect">
-              <div class="profile-card-head">
-                <span class="profile-status">🟢 Available for Internship</span>
-                <span class="profile-label">Current Focus</span>
-              </div>
-
-              <div class="profile-main">
-                <div class="profile-initials">DP</div>
-                <div>
-                  <h2>Darshil Prajapati</h2>
-                  <p>AI &amp; Data Science Student</p>
-                  <span>SVNIT Surat</span>
-                </div>
-              </div>
-
-              <ul class="focus-list" id="focusList"></ul>
-
-              <div class="stats-grid" id="statsGrid"></div>
-            </div>
-          </aside>
 
           <div class="scroll-indicator">
             <div class="scroll-mouse">
