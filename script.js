@@ -305,27 +305,7 @@ function renderWorkStyle() {
   workStyleList.innerHTML = workStyle.map((item) => `<li>${item}</li>`).join("");
 }
 
-function renderCodingProfile() {
-  codingStatsGrid.innerHTML = codingProfile.stats
-    .map(
-      (stat) => `
-        <article class="stat-card">
-          <strong class="stat-value">${stat.value}</strong>
-          <span class="stat-value-label">${stat.label}</span>
-        </article>
-      `,
-    )
-    .join("");
 
-  codingStatsImage.addEventListener(
-    "error",
-    () => {
-      codingStatsImage.hidden = true;
-      codingFallbackNote.hidden = false;
-    },
-    { once: true },
-  );
-}
 
 function renderAchievements() {
   achievementsGrid.innerHTML = achievements
@@ -461,7 +441,15 @@ function setupNavPointerEffects() {
 }
 
 function setupNavbarScrollBehavior() {
+  if (!topbar) {
+    return;
+  }
+
   let scrollTicking = false;
+
+  function updateTopbarState() {
+    topbar.classList.toggle("scrolled", window.scrollY > 24);
+  }
 
   window.addEventListener(
     "scroll",
@@ -472,17 +460,15 @@ function setupNavbarScrollBehavior() {
 
       scrollTicking = true;
       requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY;
-
-        topbar.classList.toggle("scrolled", currentScrollY > 24);
-        topbar.classList.remove("nav-hidden");
+        updateTopbarState();
         scrollTicking = false;
       });
     },
     { passive: true }
   );
-}
 
+  updateTopbarState();
+}
 function setupCounters() {
   const counters = document.querySelectorAll("[data-counter-target]");
   const animated = new WeakSet();
@@ -597,7 +583,7 @@ function init() {
   renderJourney();
   renderSkills();
   renderWorkStyle();
-  renderCodingProfile();
+  window.initCodingDashboard?.();
   renderAchievements();
   setupRevealObserver();
   setupSectionTracking();

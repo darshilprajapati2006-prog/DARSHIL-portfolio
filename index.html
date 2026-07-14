@@ -152,19 +152,14 @@
         </section>
 
         <section class="section reveal" id="about">
-          <div class="section-header">
-            <div>
-              <p class="section-label">About</p>
-              <h2>
-                Designed to communicate depth, clarity, and placement readiness
-              </h2>
+          <div class="page-hero glass-reflect">
+            <div class="page-hero-icon" aria-hidden="true">👤</div>
+            <div class="page-hero-copy">
+              <h2 class="page-hero-title">ABOUT ME</h2>
+              <p class="page-hero-subtitle">
+                Building systems with curiosity, discipline, and purpose.
+              </p>
             </div>
-            <p class="section-intro">
-              I am an AI &amp; Data Science student at SVNIT Surat, passionate
-              about building intelligent software, solving algorithmic problems,
-              exploring quantitative finance, and developing scalable modern
-              applications.
-            </p>
           </div>
 
           <div class="about-grid">
@@ -202,34 +197,40 @@
         </section>
 
         <section class="section reveal" id="projects">
-          <div class="section-header">
-            <div>
-              <p class="section-label">Projects</p>
-              <h2>Work that gives the resume proof</h2>
+          <div class="page-hero glass-reflect">
+            <div class="page-hero-icon" aria-hidden="true">🚀</div>
+            <div class="page-hero-copy">
+              <h2 class="page-hero-title">PROJECTS</h2>
+              <p class="page-hero-subtitle">
+                Real-world software engineered from ideas.
+              </p>
             </div>
-            <div class="filter-row" id="projectFilters"></div>
           </div>
+          <div class="filter-row" id="projectFilters"></div>
           <div class="projects-grid" id="projectsGrid"></div>
         </section>
 
         <section class="section reveal" id="academics">
-          <div class="section-header">
-            <div>
-              <p class="section-label">Academics</p>
-              <h2>
-                Academic foundation, growth, and readiness for applied
-                engineering
-              </h2>
+          <div class="page-hero glass-reflect">
+            <div class="page-hero-icon" aria-hidden="true">🎓</div>
+            <div class="page-hero-copy">
+              <h2 class="page-hero-title">ACADEMICS</h2>
+              <p class="page-hero-subtitle">
+                My engineering journey at SVNIT Surat.
+              </p>
             </div>
           </div>
           <div class="journey-grid" id="journeyGrid"></div>
         </section>
 
         <section class="section reveal" id="skills">
-          <div class="section-header">
-            <div>
-              <p class="section-label">Skills</p>
-              <h2>Tools and foundations I can build with right now</h2>
+          <div class="page-hero glass-reflect">
+            <div class="page-hero-icon" aria-hidden="true">🧠</div>
+            <div class="page-hero-copy">
+              <h2 class="page-hero-title">SKILLS</h2>
+              <p class="page-hero-subtitle">
+                Technologies, tools and problem-solving expertise.
+              </p>
             </div>
           </div>
 
@@ -245,65 +246,259 @@
           </div>
         </section>
         <section class="section reveal" id="coding-profile">
-          <div class="section-header">
-            <div>
-              <p class="section-label">Coding Profile</p>
-              <h2>Consistent problem solving across platforms</h2>
-            </div>
-            <p class="section-intro">
-              Aggregated snapshot of my DSA and competitive programming activity
-              across LeetCode, Codeforces, and GeeksforGeeks — synced through
-              Codolio.
-            </p>
-          </div>
-
-          <div class="glass-card coding-card">
-            <div class="coding-card-visual">
-              <img
-                class="coding-stats-image"
-                id="codingStatsImage"
-                src="https://dsastats.vercel.app/api/codolio/ImDarshil13"
-                alt="Darshil Prajapati live coding stats card"
-                loading="lazy"
-              />
-              <p class="coding-fallback-note" id="codingFallbackNote" hidden>
-                Live card is temporarily unavailable — check the full profile
-                below.
+          <div class="page-hero glass-reflect">
+            <div class="page-hero-icon" aria-hidden="true">💻</div>
+            <div class="page-hero-copy">
+              <h2 class="page-hero-title">CODING DASHBOARD</h2>
+              <p class="page-hero-subtitle">
+                Real-time competitive programming analytics, solved problems,
+                contests, ratings, and coding journey.
               </p>
             </div>
+          </div>
 
-            <div class="coding-card-info">
-              <div class="coding-stats-grid" id="codingStatsGrid"></div>
-              <a
-                class="interactive-button primary-button coding-profile-link"
-                id="codingProfileLink"
-                href="https://codolio.com/profile/ImDarshil13"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View Full Coding Profile ↗
-              </a>
+          <div class="coding-dashboard" id="codingDashboard">
+            <div class="glass-card coding-toolbar glass-reflect">
+              <div class="coding-toolbar-copy">
+                <span class="coding-live-pill">Live Sync</span>
+                <h3>Personal coding analytics dashboard</h3>
+                <p id="codingStatusMessage">
+                  Preparing live coding statistics and recent activity.
+                </p>
+              </div>
+              <div class="coding-toolbar-actions">
+                <div class="coding-last-updated">
+                  <span>Last Updated</span>
+                  <strong id="codingLastUpdated">Waiting for sync...</strong>
+                </div>
+                <button
+                  class="interactive-button primary-button coding-refresh-button"
+                  id="codingRefreshButton"
+                  type="button"
+                >
+                  Refresh Live Data
+                </button>
+                <a
+                  class="interactive-button secondary-button"
+                  href="https://codolio.com/profile/ImDarshil13"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open Codolio ↗
+                </a>
+              </div>
+            </div>
+
+            <div class="coding-skeleton-grid" id="codingLoadingSkeleton">
+              <div class="coding-skeleton-card"></div>
+              <div class="coding-skeleton-card"></div>
+              <div class="coding-skeleton-card"></div>
+              <div class="coding-skeleton-card"></div>
+            </div>
+
+            <div class="coding-dashboard-content" id="codingDashboardContent" hidden>
+              <div class="coding-summary-grid" id="codingSummaryGrid"></div>
+
+              <div class="coding-platform-grid" id="codingPlatformGrid"></div>
+
+              <div class="coding-analytics-grid">
+                <article class="glass-card coding-panel coding-panel-wide glass-reflect">
+                  <div class="coding-panel-header">
+                    <div>
+                      <span class="card-tag">Rating Graph</span>
+                      <h3>Contest rating progression</h3>
+                    </div>
+                    <div class="coding-chip-group" id="codingRatingControls"></div>
+                  </div>
+                  <div class="coding-chart-shell">
+                    <svg
+                      class="coding-line-chart"
+                      id="codingRatingChart"
+                      viewBox="0 0 820 320"
+                      role="img"
+                      aria-label="Coding rating chart"
+                    ></svg>
+                  </div>
+                </article>
+
+                <article class="glass-card coding-panel glass-reflect">
+                  <div class="coding-panel-header">
+                    <div>
+                      <span class="card-tag">Difficulty</span>
+                      <h3>Problem difficulty distribution</h3>
+                    </div>
+                  </div>
+                  <div class="difficulty-bars" id="codingDifficultyBars"></div>
+                </article>
+              </div>
+
+              <div class="coding-analytics-grid coding-analytics-grid-secondary">
+                <article class="glass-card coding-panel glass-reflect">
+                  <div class="coding-panel-header">
+                    <div>
+                      <span class="card-tag">Heatmap</span>
+                      <h3>Daily solved problems</h3>
+                    </div>
+                    <select
+                      class="coding-select"
+                      id="codingHeatmapMonthSelect"
+                      aria-label="Select heatmap month"
+                    ></select>
+                  </div>
+                  <div class="coding-heatmap" id="codingHeatmap"></div>
+                </article>
+
+                <article class="glass-card coding-panel glass-reflect">
+                  <div class="coding-panel-header">
+                    <div>
+                      <span class="card-tag">Languages</span>
+                      <h3>Language usage distribution</h3>
+                    </div>
+                  </div>
+                  <div class="coding-donut-layout">
+                    <svg
+                      class="coding-donut-chart"
+                      id="codingLanguageChart"
+                      viewBox="0 0 260 260"
+                      role="img"
+                      aria-label="Language usage donut chart"
+                    ></svg>
+                    <div class="coding-legend" id="codingLanguageLegend"></div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="coding-analytics-grid coding-analytics-grid-secondary">
+                <article class="glass-card coding-panel glass-reflect">
+                  <div class="coding-panel-header">
+                    <div>
+                      <span class="card-tag">Skills</span>
+                      <h3>LeetCode topic analysis</h3>
+                    </div>
+                  </div>
+                  <div class="coding-skill-grid" id="codingSkillGrid"></div>
+                </article>
+
+                <article class="glass-card coding-panel glass-reflect">
+                  <div class="coding-panel-header">
+                    <div>
+                      <span class="card-tag">Activity</span>
+                      <h3>Weekly, monthly, yearly rhythm</h3>
+                    </div>
+                    <div class="coding-chip-group" id="codingActivityControls"></div>
+                  </div>
+                  <div class="coding-chart-shell coding-chart-shell-bars">
+                    <svg
+                      class="coding-bar-chart"
+                      id="codingActivityChart"
+                      viewBox="0 0 820 280"
+                      role="img"
+                      aria-label="Coding activity chart"
+                    ></svg>
+                  </div>
+                </article>
+              </div>
+
+              <div class="coding-analytics-grid">
+                <article class="glass-card coding-panel glass-reflect">
+                  <div class="coding-panel-header">
+                    <div>
+                      <span class="card-tag">Recent Activity</span>
+                      <h3>Latest problems, contests, and streak events</h3>
+                    </div>
+                  </div>
+                  <div class="coding-timeline" id="codingRecentActivity"></div>
+                </article>
+
+                <article class="glass-card coding-panel glass-reflect">
+                  <div class="coding-panel-header">
+                    <div>
+                      <span class="card-tag">Achievements</span>
+                      <h3>Badges, rank milestones, and contest signals</h3>
+                    </div>
+                  </div>
+                  <div class="coding-achievement-grid" id="codingAchievements"></div>
+                </article>
+              </div>
+
+              <article class="glass-card coding-panel glass-reflect">
+                <div class="coding-panel-header coding-panel-header-table">
+                  <div>
+                    <span class="card-tag">Contest History</span>
+                    <h3>Searchable contest results and rating changes</h3>
+                  </div>
+                  <div class="coding-table-controls">
+                    <input
+                      class="coding-search-input"
+                      id="codingContestSearch"
+                      type="search"
+                      placeholder="Search contest or platform"
+                      aria-label="Search contest history"
+                    />
+                    <select
+                      class="coding-select"
+                      id="codingContestSort"
+                      aria-label="Sort contest history"
+                    >
+                      <option value="date-desc">Newest first</option>
+                      <option value="date-asc">Oldest first</option>
+                      <option value="rating-desc">Highest rating change</option>
+                      <option value="rating-asc">Lowest rating change</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="coding-table-shell">
+                  <table class="coding-table">
+                    <thead>
+                      <tr>
+                        <th>Contest</th>
+                        <th>Platform</th>
+                        <th>Rank</th>
+                        <th>Rating Change</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody id="codingContestTableBody"></tbody>
+                  </table>
+                </div>
+                <div class="coding-pagination" id="codingContestPagination"></div>
+              </article>
+            </div>
+
+            <div class="coding-dashboard-error glass-card" id="codingDashboardError" hidden>
+              <h3>Unable to load coding analytics right now</h3>
+              <p>
+                Live APIs are temporarily unavailable. Use the refresh button to
+                retry the sync.
+              </p>
             </div>
           </div>
         </section>
         <section class="section reveal" id="achievements">
-          <div class="section-header">
-            <div>
-              <p class="section-label">Achievements</p>
-              <h2>Signals that matter to recruiters and evaluators</h2>
+          <div class="page-hero glass-reflect">
+            <div class="page-hero-icon" aria-hidden="true">🏆</div>
+            <div class="page-hero-copy">
+              <h2 class="page-hero-title">ACHIEVEMENTS</h2>
+              <p class="page-hero-subtitle">
+                Milestones earned through consistency and dedication.
+              </p>
             </div>
           </div>
           <div class="achievements-grid" id="achievementsGrid"></div>
         </section>
 
         <section class="section reveal" id="contact">
+          <div class="page-hero glass-reflect">
+            <div class="page-hero-icon" aria-hidden="true">📬</div>
+            <div class="page-hero-copy">
+              <h2 class="page-hero-title">CONTACT</h2>
+              <p class="page-hero-subtitle">
+                Let&apos;s build something meaningful together.
+              </p>
+            </div>
+          </div>
           <div class="contact-layout">
             <div class="contact-copy">
-              <p class="section-label">Contact</p>
-              <h2>
-                Ready for internships, collaborations, and placement
-                opportunities
-              </h2>
               <p>
                 Replace the placeholders with your real email, GitHub, LinkedIn,
                 resume, LeetCode, and Codeforces links before you publish.
@@ -357,6 +552,7 @@
     </div>
 
     <script type="module" src="./js/background.js"></script>
+    <script src="./js/coding-dashboard.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
