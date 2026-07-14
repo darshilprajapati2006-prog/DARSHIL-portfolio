@@ -1,27 +1,32 @@
 // Content model
 const profile = {
   heroSummary:
-    "I am an AI & Data Science student at SVNIT Surat, passionate about building intelligent software, solving algorithmic problems, exploring quantitative finance, and developing scalable modern applications.",
+    "Engineering intelligent systems and mastering algorithmic Thinking across AI X Machine Learning, and Quantitative Finance. Specializing in hackathons, modern web architectures, & Turning ideas into high-performance applications.",
   typingRoles: [
     "ARTIFICIAL INTELLIGENCE",
     "MACHINE LEARNING",
     "SOFTWARE DEVELOPMENT",
     "QUANTITATIVE FINANCE",
-    "COMPETITIVE PROGRAMMING"
+    "COMPETITIVE PROGRAMMING",
   ],
   ctas: [
-    { label: "Download Resume", href: "#contact", variant: "primary-button" },
-    { label: "View Projects", href: "#projects", variant: "secondary-button" },
-    { label: "GitHub", href: "https://github.com/", variant: "secondary-button", external: true },
-    { label: "LinkedIn", href: "https://linkedin.com/", variant: "secondary-button", external: true },
-    { label: "LeetCode", href: "https://leetcode.com/", variant: "secondary-button", external: true },
-    { label: "Codeforces", href: "https://codeforces.com/", variant: "secondary-button", external: true }
+    { label: "DOWNLOAD RESUME", href: "#contact", variant: "primary-button" },
+    { label: "VIEW PROJECTS", href: "#projects", variant: "secondary-button" },
+    {
+      label: "GITHUB",
+      href: "https://github.com/darshilprajapati2006-prog",
+      variant: "secondary-button",
+      external: true,
+    },
+    {
+      label: "LINKED.IN",
+      href: "https://www.linkedin.com/in/darshil-prajapati130806/",
+      variant: "secondary-button",
+      external: true,
+    },
+    { label: "CONTACT ME", href: "#contact", variant: "secondary-button" },
   ],
-  heroMetrics: [
-    { label: "Current focus", value: "AI, DSA, Quant, Web" },
-    { label: "University", value: "SVNIT Surat" },
-    { label: "Best fit", value: "Internship and placement roles" }
-  ]
+  heroMetrics: [],
 };
 
 const projects = [
@@ -170,7 +175,6 @@ const codingFallbackNote = document.getElementById("codingFallbackNote");
 const emailValue = document.getElementById("emailValue");
 const copyEmailButton = document.getElementById("copyEmailButton");
 const copyStatus = document.getElementById("copyStatus");
-const themeToggle = document.getElementById("themeToggle");
 const yearNode = document.getElementById("year");
 const revealNodes = document.querySelectorAll(".reveal");
 const sectionNodes = document.querySelectorAll("main section[id]");
@@ -521,19 +525,6 @@ function animateCounter(node) {
   requestAnimationFrame(step);
 }
 
-function setupThemeToggle() {
-  const savedTheme = window.localStorage.getItem("portfolio-theme");
-
-  if (savedTheme === "light") {
-    document.body.classList.add("theme-light");
-  }
-
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("theme-light");
-    const nextTheme = document.body.classList.contains("theme-light") ? "light" : "dark";
-    window.localStorage.setItem("portfolio-theme", nextTheme);
-  });
-}
 
 function setupRippleEffect() {
   document.querySelectorAll(".interactive-button, .topbar-button").forEach((node) => {
@@ -613,7 +604,6 @@ function init() {
   setupNavPointerEffects();
   setupNavbarScrollBehavior();
   setupCounters();
-  setupThemeToggle();
   setupRippleEffect();
   startTypingLoop();
   copyEmailButton.addEventListener("click", copyEmail);
